@@ -20,7 +20,7 @@ func (m mockDescriptInstanceTypesAPI) DescribeInstanceTypes(ctx context.Context,
 }
 
 func TestConvert(t *testing.T) {
-	b, err := ioutil.ReadFile("instancetypeinfo.json")
+	b, err := ioutil.ReadFile("instancetypeinfo.json") // file created using respDecrypted, _ := json.MarshalIndent(resp, "", "\t") in aws.go
 	if err != nil {
 		t.Fatal(err)
 	}
