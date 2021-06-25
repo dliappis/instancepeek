@@ -1,4 +1,5 @@
 BINDIR := "build"
+CWD = $(shell pwd)
 
 build: setup
 	CGO_ENABLED=0 gox -osarch="linux/amd64 darwin/amd64" -output="$(BINDIR)/{{.Dir}}_{{.OS}}_{{.Arch}}" ./
@@ -6,6 +7,9 @@ build: setup
 setup:
 	go get github.com/mitchellh/gox
 
+test:
+	go test $(CWD)/providers/aws
+
 .DEFAULT: build
 
-.PHONY: build setup
+.PHONY: build setup test

@@ -31,8 +31,3 @@ type VMInfo struct {
 	Hypervisor string
 	Baremetal  string
 }
-
-type Catalog struct {
-	Header       []string
-	InstanceData []map[string]string
-}

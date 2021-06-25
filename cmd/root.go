@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"dimitrios_liappis/instancepeek/formatters/terminal"
 	"dimitrios_liappis/instancepeek/model"
 	"dimitrios_liappis/instancepeek/providers/aws"
@@ -45,7 +46,7 @@ func processCommand(instanceTypes []string) error {
 	case "dummy":
 		instanceInfos, _ = dummy.Convert(instanceTypes)
 	case "aws":
-		instanceInfos, _ = aws.Convert(instanceTypes)
+		instanceInfos, _ = aws.Convert(context.TODO(), instanceTypes, aws.Client("us-east-2"))
 	}
 
 	terminal.Format(instanceInfos, os.Stdout)
