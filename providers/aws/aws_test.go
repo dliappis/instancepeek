@@ -20,7 +20,7 @@ func (m mockDescriptInstanceTypesAPI) DescribeInstanceTypes(ctx context.Context,
 }
 
 func TestConvert(t *testing.T) {
-	b, err := ioutil.ReadFile("instancetypeinfo.json") // file created using respDecrypted, _ := json.MarshalIndent(resp, "", "\t") in aws.go
+	b, err := ioutil.ReadFile("instancetypeinfo.json") // file created using respDecrypted, _ := json.MarshalIndent(resp, "", "\t"); fmt.Println(string(respDescrypted)) in aws.ConfigurableConvert()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -73,7 +73,7 @@ func TestConvert(t *testing.T) {
 	for i, tt := range cases {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			ctx := context.TODO()
-			content, err := Convert(ctx, []string{"m5d.4xlarge"}, tt.client(t))
+			content, err := ConfigurableConvert(ctx, []string{"m5d.4xlarge"}, tt.client(t))
 			if err != nil {
 				t.Fatalf("expect no error, got %v", err)
 			}

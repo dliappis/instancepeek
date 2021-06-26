@@ -46,7 +46,7 @@ func processCommand(instanceTypes []string) error {
 	case "dummy":
 		instanceInfos, _ = dummy.Convert(instanceTypes)
 	case "aws":
-		instanceInfos, _ = aws.Convert(context.TODO(), instanceTypes, aws.Client("us-east-2"))
+		instanceInfos, _ = aws.Convert(context.TODO(), instanceTypes)
 	}
 
 	terminal.Format(instanceInfos, os.Stdout)

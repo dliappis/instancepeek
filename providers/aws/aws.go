@@ -17,14 +17,24 @@ type EC2DescribeInstanceTypesAPI interface {
 	DescribeInstanceTypes(ctx context.Context, params *ec2.DescribeInstanceTypesInput, optFns ...func(*ec2.Options)) (*ec2.DescribeInstanceTypesOutput, error)
 }
 
-// Converts AWS InstanceTypes to my own type
-func Convert(ctx context.Context, instanceTypes []string, api EC2DescribeInstanceTypesAPI) ([]model.InstanceInfo, error) {
-	var iTs []types.InstanceType
-	for _, iT := range instanceTypes {
-		iTs = append(iTs, types.InstanceType(iT))
+// Converts human friendly names of instance types to native instance types as expected by the AWS SDK
+func toNativeInstanceTypes(instanceTypes []string) []types.InstanceType {
+	var nativeInstanceTypes []types.InstanceType
+	for _, it := range instanceTypes {
+		nativeInstanceTypes = append(nativeInstanceTypes, types.InstanceType(it))
 	}
+	return nativeInstanceTypes
+}
+
+// Converts AWS InstanceTypes to a standardized model
+func Convert(ctx context.Context, instanceTypes []string) ([]model.InstanceInfo, error) {
+	return ConfigurableConvert(ctx, instanceTypes, Client("us-east-2"))
+}
+
+// Testable version of Convert allows client mocking
+func ConfigurableConvert(ctx context.Context, instanceTypes []string, api EC2DescribeInstanceTypesAPI) ([]model.InstanceInfo, error) {
 	input := &ec2.DescribeInstanceTypesInput{
-		InstanceTypes: iTs,
+		InstanceTypes: toNativeInstanceTypes(instanceTypes),
 	}
 
 	resp, err := api.DescribeInstanceTypes(ctx, input)
@@ -32,8 +42,6 @@ func Convert(ctx context.Context, instanceTypes []string, api EC2DescribeInstanc
 		panic("Error " + err.Error())
 	}
 
-	// respDecrypted, _ := json.MarshalIndent(resp, "", "\t")
-	// fmt.Println(string(respDecrypted))
 	var instanceInfos []model.InstanceInfo
 	for _, it := range resp.InstanceTypes {
 		instanceInfos = append(instanceInfos, model.InstanceInfo{
