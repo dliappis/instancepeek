@@ -14,24 +14,57 @@ func Convert(instanceTypes []string) ([]model.InstanceInfo, error) {
 	var instanceInfos []model.InstanceInfo
 	for _, instanceType := range instanceTypes {
 		instanceInfos = append(instanceInfos, model.InstanceInfo{
-			InstanceType: instanceType,
+			InstanceType: model.Data{
+				Label: "Instance Type",
+				Value: instanceType,
+			},
 			CPU: model.CPUInfo{
-				VCPUCount: fmt.Sprint(rand.Intn(36)),
+				VCPUCount: model.Data{
+					Label: "vCPUs",
+					Value: fmt.Sprint(rand.Intn(36)),
+				},
 			},
 			Disk: model.LocalDiskInfo{
-				Typ:     randString(),
-				Count:   fmt.Sprint(rand.Intn(24)),
-				SizeGiB: fmt.Sprint(rand.Intn(65535)),
+				Typ: model.Data{
+					Label: "Local Disk Type",
+					Value: randString(),
+				},
+				Count: model.Data{
+					Label: "Local Disk Count",
+					Value: fmt.Sprint(rand.Intn(24)),
+				},
+				SizeGiB: model.Data{
+					Label: "Local Disk Size(GiB)",
+					Value: fmt.Sprint(rand.Intn(65535)),
+				},
 			},
 			Memory: model.MemoryInfo{
-				SizeMiB: fmt.Sprint(rand.Intn(262144)),
+				SizeMiB: model.Data{
+					Label: "Memory MiB",
+					Value: fmt.Sprint(rand.Intn(262144)),
+				},
 			},
 			Network: model.NetworkInfo{
-				Performance: "up to " + fmt.Sprint(rand.Intn(100)) + "Gbps",
+				Performance: model.Data{
+					Label: "Network Speed",
+					Value: "up to " + fmt.Sprint(rand.Intn(100)) + "Gbps",
+				},
 			},
 			Hardware: model.VMInfo{
-				Hypervisor: randString(),
-				Baremetal:  fmt.Sprint(rand.Intn(2)),
+				Hypervisor: model.Data{
+					Label: "Hypervisor",
+					Value: randString(),
+				},
+				Baremetal: model.Data{
+					Label: "Baremetal",
+					Value: fmt.Sprint(rand.Intn(2)),
+				},
+			},
+			Meta: map[string]string{
+				"EBSBaselineIops":             "18750",
+				"EBSBaselineThroughputInMBps": "593.75",
+				"EBSMaximumIops":              "18750",
+				"EBSMaximumThroughputInMBps":  "593.75",
 			},
 		})
 

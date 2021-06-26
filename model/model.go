@@ -1,33 +1,38 @@
 package model
 
 type InstanceInfo struct {
-	InstanceType string
+	InstanceType Data
 	CPU          CPUInfo
 	Disk         LocalDiskInfo
 	Memory       MemoryInfo
 	Network      NetworkInfo
 	Hardware     VMInfo
+	Meta         map[string]string
 }
 
 type CPUInfo struct {
-	VCPUCount string
+	VCPUCount Data
 }
 
 type LocalDiskInfo struct {
-	Typ     string
-	Count   string
-	SizeGiB string
+	Typ     Data
+	Count   Data
+	SizeGiB Data
 }
 
 type MemoryInfo struct {
-	SizeMiB string
+	SizeMiB Data
 }
 
 type NetworkInfo struct {
-	Performance string
+	Performance Data
 }
 
 type VMInfo struct {
-	Hypervisor string
-	Baremetal  string
+	Hypervisor Data
+	Baremetal  Data
+}
+
+type Data struct {
+	Label, Value string
 }

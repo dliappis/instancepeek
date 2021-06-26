@@ -46,24 +46,57 @@ func TestConvert(t *testing.T) {
 			},
 			expect: []model.InstanceInfo{
 				{
-					InstanceType: "m5d.4xlarge",
+					InstanceType: model.Data{
+						Label: "Instance Type",
+						Value: "m5d.4xlarge",
+					},
 					CPU: model.CPUInfo{
-						VCPUCount: "16",
+						VCPUCount: model.Data{
+							Label: "vCPUs",
+							Value: "16",
+						},
 					},
 					Disk: model.LocalDiskInfo{
-						Typ:     "ssd",
-						Count:   "2",
-						SizeGiB: "300",
+						Typ: model.Data{
+							Label: "Local Disk Type",
+							Value: "ssd",
+						},
+						Count: model.Data{
+							Label: "Local Disk Count",
+							Value: "2",
+						},
+						SizeGiB: model.Data{
+							Label: "Local Disk Size(GB)",
+							Value: "300",
+						},
 					},
 					Memory: model.MemoryInfo{
-						SizeMiB: "65536",
+						SizeMiB: model.Data{
+							Label: "Memory MiB",
+							Value: "65536",
+						},
 					},
 					Network: model.NetworkInfo{
-						Performance: "Up to 10 Gigabit",
+						Performance: model.Data{
+							Label: "Network Speed",
+							Value: "Up to 10 Gigabit",
+						},
 					},
 					Hardware: model.VMInfo{
-						Hypervisor: "nitro",
-						Baremetal:  "false",
+						Hypervisor: model.Data{
+							Label: "Hypervisor",
+							Value: "nitro",
+						},
+						Baremetal: model.Data{
+							Label: "Baremetal",
+							Value: "false",
+						},
+					},
+					Meta: map[string]string{
+						"EBSBaselineIops":              "18750",
+						"EBSBaselineThroughput (MBps)": "593.75",
+						"EBSMaxIops":                   "18750",
+						"EBSMaxThroughput (MBps)":      "593.75",
 					},
 				},
 			},
