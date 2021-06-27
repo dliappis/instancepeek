@@ -51,6 +51,7 @@ func Format(instanceInfos []model.InstanceInfo, dst io.Writer) error {
 		{tablewriter.BgHiMagentaColor, tablewriter.Bold, tablewriter.FgWhiteColor},
 	}
 
+	// use the same color scheme for all meta values
 	metaColor := tablewriter.Colors{tablewriter.BgBlueColor, tablewriter.Bold, tablewriter.FgWhiteColor}
 
 	for range metaKeys {
@@ -60,10 +61,10 @@ func Format(instanceInfos []model.InstanceInfo, dst io.Writer) error {
 	table.SetHeader(header)
 	table.SetHeaderColor(headerColors...)
 
-	for _, instanceInfo := range instanceInfos {
-		var row []string
-		row = append(
-			row,
+	var tableData [][]string
+
+	for i, instanceInfo := range instanceInfos {
+		tableData = append(tableData, []string{
 			instanceInfo.InstanceType.Value,
 			instanceInfo.CPU.VCPUCount.Value,
 			instanceInfo.Disk.Typ.Value,
@@ -73,13 +74,13 @@ func Format(instanceInfos []model.InstanceInfo, dst io.Writer) error {
 			instanceInfo.Network.Performance.Label,
 			instanceInfo.Hardware.Baremetal.Label,
 			instanceInfo.Hardware.Hypervisor.Label,
-		)
+		})
 		for _, v := range instanceInfo.Meta {
-			row = append(row, v)
+			tableData[i] = append(tableData[i], v)
 		}
-		table.Append(row)
 	}
 
+	table.AppendBulk(tableData)
 	table.Render()
 	return nil
 }
