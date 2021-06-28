@@ -70,10 +70,10 @@ func Format(instanceInfos []model.InstanceInfo, dst io.Writer) error {
 			instanceInfo.Disk.Typ.Value,
 			instanceInfo.Disk.Count.Value,
 			instanceInfo.Disk.SizeGiB.Value,
-			instanceInfo.Memory.SizeMiB.Label,
-			instanceInfo.Network.Performance.Label,
-			instanceInfo.Hardware.Baremetal.Label,
-			instanceInfo.Hardware.Hypervisor.Label,
+			instanceInfo.Memory.SizeMiB.Value,
+			instanceInfo.Network.Performance.Value,
+			instanceInfo.Hardware.Hypervisor.Value,
+			instanceInfo.Hardware.Baremetal.Value,
 		})
 		for _, v := range instanceInfo.Meta {
 			tableData[i] = append(tableData[i], v)
