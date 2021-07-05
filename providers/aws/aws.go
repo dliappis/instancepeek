@@ -44,7 +44,7 @@ func ConfigurableConvert(ctx context.Context, instanceTypes []string, api EC2Des
 
 	var instanceInfos []model.InstanceInfo
 	for _, it := range resp.InstanceTypes {
-		instanceInfos = append(instanceInfos, model.InstanceInfo{
+		baseInstanceInfo := model.InstanceInfo{
 			InstanceType: model.Data{
 				Label: "Instance Type",
 				Value: string(it.InstanceType),
@@ -53,20 +53,6 @@ func ConfigurableConvert(ctx context.Context, instanceTypes []string, api EC2Des
 				VCPUCount: model.Data{
 					Label: "vCPUs",
 					Value: fmt.Sprint(*it.VCpuInfo.DefaultVCpus),
-				},
-			},
-			Disk: model.LocalDiskInfo{
-				Typ: model.Data{
-					Label: "Local Disk Type",
-					Value: string(it.InstanceStorageInfo.Disks[0].Type),
-				},
-				Count: model.Data{
-					Label: "Local Disk Count",
-					Value: fmt.Sprint(*it.InstanceStorageInfo.Disks[0].Count),
-				},
-				SizeGiB: model.Data{
-					Label: "Local Disk Size(GB)",
-					Value: fmt.Sprint(*it.InstanceStorageInfo.Disks[0].SizeInGB),
 				},
 			},
 			Memory: model.MemoryInfo{
@@ -97,7 +83,27 @@ func ConfigurableConvert(ctx context.Context, instanceTypes []string, api EC2Des
 				"EBSMaxIops":                   fmt.Sprint(*it.EbsInfo.EbsOptimizedInfo.MaximumIops),
 				"EBSMaxThroughput (MBps)":      fmt.Sprint(*it.EbsInfo.EbsOptimizedInfo.MaximumThroughputInMBps),
 			},
-		})
+		}
+
+		if it.InstanceStorageInfo != nil {
+			localDiskInfo := model.LocalDiskInfo{
+				Typ: model.Data{
+					Label: "Local Disk Type",
+					Value: string(it.InstanceStorageInfo.Disks[0].Type),
+				},
+				Count: model.Data{
+					Label: "Local Disk Count",
+					Value: fmt.Sprint(*it.InstanceStorageInfo.Disks[0].Count),
+				},
+				SizeGiB: model.Data{
+					Label: "Local Disk Size(GB)",
+					Value: fmt.Sprint(*it.InstanceStorageInfo.Disks[0].SizeInGB),
+				},
+			}
+			baseInstanceInfo.Disk = localDiskInfo
+		}
+
+		instanceInfos = append(instanceInfos, baseInstanceInfo)
 	}
 	return instanceInfos, nil
 }
