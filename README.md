@@ -34,4 +34,4 @@ Example invocation:
 
 `./instancepeek_linux_amd64 --provider=aws i3.2xlarge i3en.2xlarge m5d.2xlarge c5d.2xlarge`
 
-![](2021-07-09-11-11-41.png)
+![](docs/images/2021-07-09-11-11-41.png)
