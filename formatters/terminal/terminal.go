@@ -21,6 +21,7 @@ func sortedMetaKeys(meta map[string]string) []string {
 func Format(instanceInfos []model.InstanceInfo, dst io.Writer) error {
 	table := tablewriter.NewWriter(dst)
 
+	table.SetAutoFormatHeaders(false)
 	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
 	table.SetCenterSeparator("|")
 
